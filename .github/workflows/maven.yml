@@ -12,8 +12,6 @@ name: Java CI with Maven
 on:     # on which event it will start
   push:       # pushed changes to main branch repository pipeline triggers. done in lower environments , productions manual.
     branches: [ "main" ] 
-  pull_request:    # pull request raised triggres the pipeline. Not recommended. 
-    branches: [ "main" ]
 # trigger end
 
 jobs:   # jobs assumes as stages.
