@@ -15,40 +15,10 @@ on:     # on which event it will start
 # trigger end
 
 jobs:   # jobs assumes as stages.
-  Compilation:  # Job name 
-    name: Compiling Project  # job identifier
-    runs-on: ubuntu-latest  # to where you want to execute the job. "ubuntu-latest" this is free runner. No access to this machine.
-
-    steps:  
-    - uses: actions/checkout@v4 # its going to clone the repo on ubuntu latest.
-    - name: Set up JDK 17   # name for setup given here
-      uses: actions/setup-java@v4  # install java
-      with: 
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      run: mvn -B compile --file pom.xml   # maven -B to run background mode , non interactive , package to genrate jar file. 
-
-  Unit-test:
-    name: Unit-test Cases Running
-    runs-on: ubuntu-latest  # to where you want to execute the job. "ubuntu-latest" this is free runner. No access to this machine.
-    needs: Compilation
-    steps:  
-    - uses: actions/checkout@v4 # its going to clone the repo on ubuntu latest.
-    - name: Set up JDK 17   # name for setup given here
-      uses: actions/setup-java@v4  # install java
-      with: 
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      run: mvn -B test --file pom.xml   # maven -B to run background mode , non interactive , package to genrate jar file. 
-  
+ 
   build:
     name: Builing Package
     runs-on: ubuntu-latest  # to where you want to execute the job. "ubuntu-latest" this is free runner. No access to this machine.
-    needs: Unit-test
     steps:  
     - uses: actions/checkout@v4 # its going to clone the repo on ubuntu latest.
     - name: Set up JDK 17   # name for setup given here
@@ -58,4 +28,7 @@ jobs:   # jobs assumes as stages.
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B package --file pom.xml   # maven -B to run background mode , non interactive , package to genrate jar file. 
+      run: |
+          mvn -B compile --file pom.xml
+          mvn -B test --file pom.xml 
+          mvn -B package --file pom.xml   
