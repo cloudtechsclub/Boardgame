@@ -16,7 +16,7 @@ on:     # on which event it will start
 
 jobs:   # jobs assumes as stages.
   Compilation:
-    name: complie the project
+    name: Compiling Project
     runs-on: ubuntu-latest  # to where you want to execute the job. "ubuntu-latest" this is free runner. No access to this machine.
 
     steps:  
@@ -31,7 +31,7 @@ jobs:   # jobs assumes as stages.
       run: mvn -B compile --file pom.xml   # maven -B to run background mode , non interactive , package to genrate jar file. 
 
   Unit-test:
-    name: unit-test case
+    name: Unit-test Cases Running
     runs-on: ubuntu-latest  # to where you want to execute the job. "ubuntu-latest" this is free runner. No access to this machine.
     steps:  
     - uses: actions/checkout@v4 # its going to clone the repo on ubuntu latest.
@@ -45,6 +45,7 @@ jobs:   # jobs assumes as stages.
       run: mvn -B test --file pom.xml   # maven -B to run background mode , non interactive , package to genrate jar file. 
   
   build:
+    name: Builing Package
     runs-on: ubuntu-latest  # to where you want to execute the job. "ubuntu-latest" this is free runner. No access to this machine.
     steps:  
     - uses: actions/checkout@v4 # its going to clone the repo on ubuntu latest.
