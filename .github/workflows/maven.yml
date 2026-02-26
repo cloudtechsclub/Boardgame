@@ -14,11 +14,16 @@ on:     # on which event it will start
     branches: [ "main" ] 
 # trigger end
 
+env:  # Golbal environment variable
+  APP_NAME: Cloudtechs-Club-Java-Demo 
+
 jobs:   # jobs assumes as stages.
- 
-  build:
-    name: Builing Package
+  Pre-build:
+    name: Prebuild Phase
     runs-on: ubuntu-latest  # to where you want to execute the job. "ubuntu-latest" this is free runner. No access to this machine.
+    env:    # Local environment variable
+      STAGE_NAME: Cloudtechs-Club-Java-Demo 
+    
     steps:  
     - uses: actions/checkout@v4 # its going to clone the repo on ubuntu latest.
     - name: Set up JDK 17   # name for setup given here
@@ -31,7 +36,25 @@ jobs:   # jobs assumes as stages.
       run: |
           mvn -B compile --file pom.xml
           mvn -B test --file pom.xml 
-          mvn -B package --file pom.xml   
+          echo "App Name: $APP_NAME"
+          echo "Stage-Name: $STAGE_NAME"
+
+  build:
+    name: Builing Package
+    runs-on: ubuntu-latest  # to where you want to execute the job. "ubuntu-latest" this is free runner. No access to this machine.
+    needs: Pre-build
+    steps:  
+    - uses: actions/checkout@v4 # its going to clone the repo on ubuntu latest.
+    - name: Set up JDK 17   # name for setup given here
+      uses: actions/setup-java@v4  # install java
+      with: 
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: |
+        echo "App Name: $APP_NAME"
+        mvn -B package --file pom.xml   
 
     - uses: actions/upload-artifact@v4
       with:
