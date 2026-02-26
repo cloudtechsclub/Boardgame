@@ -15,8 +15,8 @@ on:     # on which event it will start
 # trigger end
 
 jobs:   # jobs assumes as stages.
-  Compilation:
-    name: Compiling Project
+  Compilation:  # Job name 
+    name: Compiling Project  # job identifier
     runs-on: ubuntu-latest  # to where you want to execute the job. "ubuntu-latest" this is free runner. No access to this machine.
 
     steps:  
@@ -33,6 +33,7 @@ jobs:   # jobs assumes as stages.
   Unit-test:
     name: Unit-test Cases Running
     runs-on: ubuntu-latest  # to where you want to execute the job. "ubuntu-latest" this is free runner. No access to this machine.
+    needs: Compilation
     steps:  
     - uses: actions/checkout@v4 # its going to clone the repo on ubuntu latest.
     - name: Set up JDK 17   # name for setup given here
@@ -47,6 +48,7 @@ jobs:   # jobs assumes as stages.
   build:
     name: Builing Package
     runs-on: ubuntu-latest  # to where you want to execute the job. "ubuntu-latest" this is free runner. No access to this machine.
+    needs: Unit-test
     steps:  
     - uses: actions/checkout@v4 # its going to clone the repo on ubuntu latest.
     - name: Set up JDK 17   # name for setup given here
